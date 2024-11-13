@@ -4,12 +4,9 @@ services:
   app:
     build: ./telephony_api
     ports:
-      - "5000:5000"
-    environment:
-      - DATABASE_URL=postgres://telephony_api:telephony_api@db:5432/telephony_api_dev
+      - 5000:5000
     volumes:
-      - ./telephony_api:/app
-    command: uvicorn src.main:app --reload --host 0.0.0.0 --port 5000
+      - ./telephony_api/src:/app/src
     depends_on:
       - db
 

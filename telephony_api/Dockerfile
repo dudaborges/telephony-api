@@ -21,8 +21,8 @@ ENV VIRTUAL_ENV=/app/.venv \
 
 COPY --from=builder ${VIRTUAL_ENV} ${VIRTUAL_ENV}
 
-COPY telephony_api ./telephony_api
+COPY src/ .
 
 EXPOSE 5000
 
-ENTRYPOINT ["uvicorn", "telephony_api.src.main:app", "--host", "0.0.0.0", "--port", "5000"]
+ENTRYPOINT ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "5000"]
