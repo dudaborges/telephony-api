@@ -1,14 +1,12 @@
 from tortoise.contrib.pydantic import pydantic_model_creator
 
-from src.database.models import CallRecord
+from database.models import CallRecord
 
 
 CallRecordInSchema = pydantic_model_creator(
-    CallRecord, name="CallRecordIn", exclude_readonly=True
+    CallRecord, name='CallRecordIn', exclude_readonly=True
 )
-CallRecordOutSchema = pydantic_model_creator(
-    CallRecord, name="CallRecordOut"
-)
+CallRecordOutSchema = pydantic_model_creator(CallRecord, name='CallRecordOut')
 CallRecordDatabaseSchema = pydantic_model_creator(
-    CallRecord, name="CallRecord"
+    CallRecord, name='CallRecord'
 )
