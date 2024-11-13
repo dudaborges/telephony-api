@@ -6,7 +6,7 @@ services:
     ports:
       - "5000:5000"
     environment:
-      - DATABASE_URL=postgres://hello_fastapi:hello_fastapi@db:5432/hello_fastapi_dev
+      - DATABASE_URL=postgres://telephony_api:telephony_api@db:5432/telephony_api_dev
     volumes:
       - ./telephony_api:/app
     command: uvicorn src.main:app --reload --host 0.0.0.0 --port 5000
@@ -18,9 +18,9 @@ services:
     expose:
       - 5432
     environment:
-      - POSTGRES_USER=hello_fastapi
-      - POSTGRES_PASSWORD=hello_fastapi
-      - POSTGRES_DB=hello_fastapi_dev
+      - POSTGRES_USER=telephony_api
+      - POSTGRES_PASSWORD=telephony_api
+      - POSTGRES_DB=telephony_api_dev
     volumes:
       - postgres_data:/var/lib/postgresql/data/
 
