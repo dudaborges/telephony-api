@@ -8,47 +8,157 @@ Esta aplicação oferece uma API REST para calcular faturas mensais de chamadas 
 - **Cálculo de custos**: O custo por minuto depende do horário da chamada (horário de pico ou fora de pico).
 - **Visualização de registros de chamadas**: Os registros de chamadas realizadas durante o período de cálculo são retornados.
 
-## Endpoints
 
-### `GET /phone-bill/{phone_number}`
+## Endpoints da API
 
-Recupera a fatura de chamadas para um número de telefone específico, com base no período fornecido.
+A API possui os seguintes endpoints disponíveis:
 
-**Parâmetros**
-- `phone_number` (string): O número de telefone para o qual a fatura será gerada (formato: `DDD+NUMERO`).
+### 1. `GET /phone_bill/{phone_number}`
 
-**Query Parameters**
-- `period` (opcional): O mês para o qual a fatura será gerada, no formato `MM/YYYY`. Caso não seja fornecido, o período será calculado automaticamente para os últimos 30 dias.
+Este endpoint retorna as faturas de chamadas para um número de telefone específico, baseado no período informado (se não informado, o período padrão será o mês atual).
 
-**Resposta**
+#### Parâmetros de URL
+
+- `phone_number` (obrigatório): O número de telefone para o qual as faturas serão recuperadas.
+
+#### Parâmetros de Query (Opcional)
+
+- `period` (opcional): O período no formato `YYYY-MM` para o qual as faturas devem ser retornadas. Se não fornecido, o período padrão será o mês atual.
+
+#### Exemplo de Requisição
+
+```bash
+GET /phone-bill/48999650061?period=2024-10
+```
+
+#### Exemplo de Resposta
+
 ```json
 {
   "id": "30671f73-02dd-4760-9112-7d61b3735fe1",
   "phone_number": "48999650061",
   "period": "2024-10-01",
   "total_cost": "0.00",
-  "records": [
+  "records": []
+}
+```
+
+### 2. `POST /create`
+
+Este endpoint cria uma fatura de chamadas para um número de telefone especificado.
+
+#### Parâmetros de URL
+
+- `phone_number` (obrigatório): O número de telefone para o qual a fatura será criada.
+
+#### Corpo da Requisição
+
+O corpo da requisição deve conter os detalhes das chamadas, incluindo o tipo de evento (`start` ou `end`), timestamp e outros detalhes relacionados.
+
+#### Exemplo de Corpo de Requisição
+
+```json
+{
+  "type": "start",
+  "timestamp": "2024-11-14T00:28:39.981000Z",
+  "call_id": -2147483648,
+  "source": "48999650061",
+  "destination": "string",
+  "phone_bill": []
+}
+```
+
+#### Exemplo de Resposta
+
+```json
+{
+  "message": "Fatura criada com sucesso.",
+  "phone_number": "48999650061",
+  "call_id": -2147483648
+}
+```
+
+### 3. `GET /call_records`
+
+Este endpoint retorna todos os registros de chamadas.
+
+#### Parâmetros de URL
+
+- `phone_number` (obrigatório): O número de telefone para o qual os registros de chamadas serão recuperados.
+
+#### Exemplo de Requisição
+
+```bash
+GET /call_records
+```
+
+#### Exemplo de Resposta
+
+```json
+[
+  {
+    "id": "c51fe92e-72a5-4bf9-a38a-1146db8af951",
+    "type": "start",
+    "timestamp": "2024-11-13T23:57:07.140000Z",
+    "call_id": -2147483648,
+    "source": "48999650061",
+    "destination": "string",
+    "phone_bill": []
+  },
+  {
+    "id": "a5294478-0ea5-4a15-b302-c8b863a10410",
+    "type": "end",
+    "timestamp": "2024-11-14T00:29:31.073000Z",
+    "call_id": -2147483648,
+    "source": "48999650061",
+    "destination": "string",
+    "phone_bill": []
+  }
+]
+```
+
+### 4. `GET /call_records/{phone_number}`
+
+Este endpoint retorna todos os registros de chamadas para um número de telefone especificado.
+
+#### Parâmetros de URL
+
+- `phone_number` (obrigatório): O número de telefone.
+
+#### Corpo da Requisição
+
+O corpo da requisição deve conter os detalhes da chamada, incluindo o tipo de evento (start ou end), timestamp, e outros detalhes relacionados.
+
+#### Exemplo de Corpo de Requisição
+
+#### Exemplo de Requisição
+
+```bash
+GET /call_records/48999650061
+```
+
+#### Exemplo de Resposta
+
+```json
+{
+  "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "type": "string",
+  "timestamp": "2024-11-14T01:31:27.215Z",
+  "call_id": -2147483648,
+  "source": "string",
+  "destination": "string",
+  "phone_bill": [
     {
-      "id": "c51fe92e-72a5-4bf9-a38a-1146db8af951",
-      "type": "start",
-      "timestamp": "2024-10-01T12:00:00.000000Z",
-      "call_id": 1,
-      "source": "48999650061",
-      "destination": "48991234567",
-      "duration": 120
-    },
-    {
-      "id": "d8f234a3-d455-4ced-93c2-27b09b79d871",
-      "type": "end",
-      "timestamp": "2024-10-01T12:02:00.000000Z",
-      "call_id": 1,
-      "source": "48999650061",
-      "destination": "48991234567",
-      "duration": 120
+      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "phone_number": "string",
+      "period": "2024-11-14",
+      "total_cost": "string"
     }
   ]
 }
 ```
+
+Esses são os endpoints principais disponíveis na API para consulta, criação e verificação de faturas de chamadas telefônicas. Certifique-se de incluir as variáveis de ambiente adequadas, como as credenciais de banco de dados, para que a aplicação funcione corretamente.
 
 ## Tecnologias Utilizadas
 
